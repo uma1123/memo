@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import React from "react";
 import { MemoData } from "../types/types";
-import Link from "next/Link";
+import Link from "next/link";
 
 interface MemoDataProps {
   memoData: MemoData;
