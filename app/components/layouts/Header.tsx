@@ -1,52 +1,37 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { PenSquare, Search, Settings, User } from "lucide-react";
+import Link from "next/link";
 
-export default function Header() {
+const Header = () => {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center justify-between">
-        <div className="flex items-center gap-2">
-          <PenSquare className="h-6 w-6" />
-          <span className="font-semibold">メモアプリ</span>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <div className="relative w-[250px]">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input type="search" placeholder="メモを検索..." className="pl-8" />
-          </div>
-          <Button>
-            <PenSquare className="mr-2 h-4 w-4" />
-            新規メモ
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <User className="h-5 w-5" />
-                <span className="sr-only">ユーザーメニュー</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>マイアカウント</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                設定
-              </DropdownMenuItem>
-              <DropdownMenuItem>ログアウト</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+    <div className="divide-y border-gray-200 dark:border-gray-800 border-b">
+      <div className="px-4 py-3 md:py-6 lg:px-6">
+        <div className="flex items-center space-y-2 md:space-y-0 md:space-x-6">
+          <Link href="/" className="text-2xl font-bold tracking-tighter mr-4">
+            メモアプリ
+          </Link>
+          <nav className="flex items-center space-x-6 text-sm">
+            <Link
+              className="font-medium text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+              href="/"
+            >
+              Home
+            </Link>
+            <Link
+              className="font-medium text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+              href="/about"
+            >
+              About
+            </Link>
+            <Link
+              className="bg-black py-3 px-4 text-white rounded-md font-medium"
+              href="/memo-posts/create"
+            >
+              新規メモ
+            </Link>
+          </nav>
         </div>
       </div>
-    </header>
+    </div>
   );
-}
+};
+
+export default Header;

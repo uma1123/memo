@@ -4,12 +4,12 @@ import { MemoData } from "./types/types";
 async function getMemoAllData() {
   const response = await fetch("http://localhost:3000/api/post", {
     cache: "no-store",
-  });
+  }); //配列で返ってくる
   const memoAllData = await response.json();
   return memoAllData;
 }
 export default async function Home() {
-  const memoAllData: MemoData = await getMemoAllData();
+  const memoAllData: MemoData[] = await getMemoAllData();
 
   return (
     <main>
