@@ -21,7 +21,7 @@ const formSchema = z.object({
   content: z
     .string()
     .min(2, { message: "本文は2文字以上で入力して下さい" })
-    .max(200, { message: "本文は200文字以内で入力して下さい" }),
+    .max(1000, { message: "本文は1000文字以内で入力して下さい" }),
 });
 
 const CreateMemoPage = () => {
@@ -86,7 +86,7 @@ const CreateMemoPage = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">追加</Button>
       </form>
     </Form>
   );
