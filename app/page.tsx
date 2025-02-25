@@ -1,10 +1,11 @@
 import MemoCardlist from "./components/MemoCardlist";
 import { MemoData } from "./types/types";
 
+//メモデータを全て取得
 async function getMemoAllData() {
   const response = await fetch("http://localhost:3000/api/post", {
     cache: "no-store",
-  }); //配列で返ってくる
+  });
   const memoAllData = await response.json();
   return memoAllData;
 }
