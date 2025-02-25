@@ -22,7 +22,9 @@ const MemoCard = ({ memoData }: MemoDataProps) => {
       </CardHeader>
       <CardContent>{content}</CardContent>
       <CardFooter className="flex justify-between"></CardFooter>
-      <Link href={`/memo-posts/${id}`}>詳細</Link>
+      <Link href={`/memo-posts/${id}`} className="text-blue-800">
+        くわしく
+      </Link>
     </Card>
   );
 };
