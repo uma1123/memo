@@ -5,7 +5,7 @@ import React from "react";
 async function getDetailMemoData(id: number) {
   const response = await fetch(`http://localhost:3000/api/post/${id}`, {
     cache: "no-store",
-  }); // 配列で返ってくる
+  });
   const memoDetailData: MemoData = await response.json();
   return memoDetailData;
 }
