@@ -30,6 +30,27 @@ const MemoCardList = ({ memoAllData }: MemoAllDataProps) => {
       console.error("エラーが発生しました", error);
     }
   };
+
+  const handleUpdate = async (id: number, title: string, content: string) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/post/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, content }),
+      });
+      if (response.ok) {
+        const updateMemo = await response.json();
+        router.refresh();
+        setMemos((prev) =>
+          prev.map((memo) => (memo.id === id ? updateMemo : memo))
+        );
+      } else {
+        console.error("更新に失敗しました");
+      }
+    } catch (error) {
+      console.error("更新時にエラーが発生しました", error);
+    }
+  };
   return (
     <div className="grid lg:grid-cols-3 px-4 py-4 gap-4">
       {memoAllData.map((memoData: MemoData) => (
@@ -37,6 +58,7 @@ const MemoCardList = ({ memoAllData }: MemoAllDataProps) => {
           key={memoData.id}
           memoData={memoData}
           onDelete={handleDelete}
+          onUpdate={handleUpdate}
         />
       ))}
     </div>
