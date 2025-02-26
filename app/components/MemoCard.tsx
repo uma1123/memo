@@ -31,13 +31,13 @@ const MemoCard = ({ memoData, onDelete }: MemoDataProps) => {
           href={`/memo-posts/${id}`}
           className="text-blue-600 hover:text-blue-800 transition"
         >
-          <MdReadMore size={30} />
+          <MdReadMore size={30} title="編集する" />
         </Link>
         <button
           className="text-red-500 hover:text-red-700 transition"
           onClick={() => onDelete(id)}
         >
-          <FaRegTrashAlt size={20} />
+          <FaRegTrashAlt size={20} title="削除する" />
         </button>
       </CardFooter>
     </Card>
