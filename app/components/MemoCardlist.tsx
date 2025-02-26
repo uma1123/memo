@@ -51,6 +51,8 @@ const MemoCardList = ({ memoAllData }: MemoAllDataProps) => {
       console.error("更新時にエラーが発生しました", error);
     }
   };
+  if (!memos) return <p>読み込み中...</p>;
+
   return (
     <div className="grid lg:grid-cols-3 px-4 py-4 gap-4">
       {memoAllData.map((memoData: MemoData) => (
