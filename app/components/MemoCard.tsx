@@ -5,19 +5,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import React from "react";
 import { MemoData } from "../types/types";
 import Link from "next/link";
-import { MdReadMore } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
 import { FaRegTrashAlt } from "react-icons/fa";
 
 interface MemoDataProps {
   memoData: MemoData;
   onDelete: (id: number) => void;
+  onUpdate: (id: number, title: string, content: string) => void;
 }
 
 const MemoCard = ({ memoData, onDelete }: MemoDataProps) => {
-  const { id, title, content, createdAt } = memoData;
+  const { id, title, content } = memoData;
+
   return (
     <Card className="w-100 h-60 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 p-4 flex flex-col justify-between">
       <CardHeader>
@@ -31,7 +32,7 @@ const MemoCard = ({ memoData, onDelete }: MemoDataProps) => {
           href={`/memo-posts/${id}`}
           className="text-blue-600 hover:text-blue-800 transition"
         >
-          <MdReadMore size={30} title="編集する" />
+          <CiEdit size={30} title="編集する" />
         </Link>
         <button
           className="text-red-500 hover:text-red-700 transition"
