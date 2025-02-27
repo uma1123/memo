@@ -16,12 +16,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
 
-const formSchema = z.object({
-  title: z.string().min(2, { message: "タイトルは2文字以上で入力して下さい" }),
+export const formSchema = z.object({
+  title: z
+    .string()
+    .min(2, { message: "タイトルは2文字以上で入力してください" }),
   content: z
     .string()
-    .min(2, { message: "本文は2文字以上で入力して下さい" })
-    .max(1000, { message: "本文は1000文字以内で入力して下さい" }),
+    .min(2, { message: "本文は2文字以上で入力してください" })
+    .max(1000, { message: "本文は1000文字以内で入力してください" }),
 });
 
 const CreateMemoPage = () => {
@@ -50,44 +52,62 @@ const CreateMemoPage = () => {
       console.error(err);
     }
   }
+
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-3 w-1/2 px-7"
-      >
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>タイトル</FormLabel>
-              <FormControl>
-                <Input placeholder="タイトル" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="content"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>本文</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="投稿内容"
-                  className="resize-none"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">追加</Button>
-      </form>
+      <div className="max-w-5xl mx-auto my-auto p-6 bg-white shadow-md rounded-lg">
+        <h2 className="text-3xl font-bold text-center mb-6">メモを追加</h2>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6 w-3/4 mx-auto"
+        >
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-lg font-medium">タイトル</FormLabel>
+                <FormControl>
+                  <Input placeholder="タイトルを入力" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="content"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-lg font-medium">本文</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="メモの内容を入力"
+                    className="resize-none h-32"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex justify-between">
+            <Button
+              type="button"
+              onClick={() => router.back()}
+              className=" py-2 bg-gray-400 text-white hover:bg-gray-500"
+            >
+              キャンセル
+            </Button>
+            <Button
+              type="submit"
+              className="py-2 bg-blue-500 text-white hover:bg-blue-600"
+            >
+              追加
+            </Button>
+          </div>
+        </form>
+      </div>
     </Form>
   );
 };
