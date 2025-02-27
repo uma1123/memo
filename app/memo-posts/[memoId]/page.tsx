@@ -1,90 +1,131 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import React, { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Textarea } from "@/components/ui/textarea";
+import { useParams, useRouter } from "next/navigation";
 import { MemoData } from "@/app/types/types";
-
-interface MemoProps {
-  memoData: MemoData;
-}
+import { formSchema } from "../create/page";
 
 const MemoEditPage = () => {
   const router = useRouter();
   const { memoId } = useParams<{ memoId: string }>();
-  const [memo, setMemo] = useState<MemoProps | null>(null);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      content: "",
+    },
+  });
+
+  const [loading, setLoading] = useState(true);
 
   // メモデータ取得
   useEffect(() => {
     const fetchMemo = async () => {
-      const res = await fetch(`http://localhost:3000/api/post/${memoId}`);
-      if (res.ok) {
-        const data = await res.json();
-        setMemo(data);
-        setTitle(data.title);
-        setContent(data.content);
-      } else {
-        console.error("メモ取得に失敗しました");
+      try {
+        const res = await fetch(`http://localhost:3000/api/post/${memoId}`);
+        if (!res.ok) throw new Error("メモの取得に失敗しました");
+
+        const data: MemoData = await res.json();
+        form.setValue("title", data.title);
+        form.setValue("content", data.content);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchMemo();
-  }, [memoId]);
+  }, [memoId, form]);
 
   // メモ更新処理
-  const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const res = await fetch(`http://localhost:3000/api/post/${memoId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, content }),
-    });
+  const handleUpdate = async (values: { title: string; content: string }) => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/post/${memoId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
 
-    if (res.ok) {
+      if (!res.ok) throw new Error("メモの更新に失敗しました");
+
       router.push("/"); // 更新後にトップページへリダイレクト
-    } else {
-      console.error("メモの更新に失敗しました");
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  if (!memo) return <p>読み込み中...</p>;
+  if (loading) return <p className="text-center mt-10">読み込み中...</p>;
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <h2 className="text-2xl font-semibold mb-4">メモを編集</h2>
-      <form onSubmit={handleUpdate} className="space-y-4">
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="タイトル"
-          className="w-full border rounded-lg p-2"
-          required
-        />
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="内容"
-          className="w-full border rounded-lg p-2 h-48"
-          required
-        />
-        <div className="flex justify-between">
-          <button
-            type="button"
-            className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-500"
-            onClick={() => router.back()}
-          >
-            キャンセル
-          </button>
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-          >
-            更新
-          </button>
-        </div>
-      </form>
-    </div>
+    <Form {...form}>
+      <div className="max-w-5xl mx-auto my-auto p-6 bg-white shadow-md rounded-lg">
+        <h2 className="text-3xl font-bold text-center mb-6">メモを編集</h2>
+        <form
+          onSubmit={form.handleSubmit(handleUpdate)}
+          className="space-y-6 w-full sm:w-3/4 md:w-1/2 mx-auto"
+        >
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-lg font-medium">タイトル</FormLabel>
+                <FormControl>
+                  <Input placeholder="タイトルを編集" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="content"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-lg font-medium">本文</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="メモの内容を編集"
+                    className="resize-none h-32"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex justify-between">
+            <Button
+              type="button"
+              onClick={() => router.back()}
+              className="bg-gray-400 text-white hover:bg-gray-500"
+            >
+              キャンセル
+            </Button>
+            <Button
+              type="submit"
+              className="bg-blue-500 text-white hover:bg-blue-600"
+            >
+              更新
+            </Button>
+          </div>
+        </form>
+      </div>
+    </Form>
   );
 };
 
