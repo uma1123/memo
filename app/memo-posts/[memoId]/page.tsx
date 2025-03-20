@@ -40,8 +40,11 @@ const MemoEditPage = () => {
         if (!res.ok) throw new Error("メモの取得に失敗しました");
 
         const data: MemoData = await res.json();
-        form.setValue("title", data.title);
-        form.setValue("content", data.content);
+        form.reset({
+          title: "",
+          content: "",
+        });
+        setLoading(false);
       } catch (error) {
         console.error(error);
       } finally {
