@@ -10,7 +10,6 @@ import Link from "next/link";
 import { CiEdit } from "react-icons/ci";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FaStar, FaRegStar } from "react-icons/fa";
-
 interface MemoDataProps {
   memoData: MemoData;
   onDelete: (id: number) => void;
