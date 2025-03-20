@@ -17,5 +17,6 @@ model Post {
   id Int @id @default(autoincrement())
   title String
   content String
+  isFavorite Boolean @default(false)
   createdAt DateTime @default(now())
 }
