@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import MemoCard from "./MemoCard";
+import MemoHeaderAlt from "./layouts/Header";
 import { MemoData } from "../types/types";
 import { useRouter } from "next/navigation";
 
@@ -10,6 +11,7 @@ interface MemoAllDataProps {
 
 const MemoCardList = ({ memoAllData }: MemoAllDataProps) => {
   const [memos, setMemos] = useState(memoAllData);
+  const [filter, setFilter] = useState("all"); // フィルター状態を管理
   const router = useRouter();
 
   // メモ削除処理
@@ -77,19 +79,30 @@ const MemoCardList = ({ memoAllData }: MemoAllDataProps) => {
     }
   };
 
+  // ** フィルター適用 **
+  const filteredMemos = memos.filter((memo) => {
+    if (filter === "favorites") return memo.isFavorite; // お気に入りのみ
+    return true; // すべてのメモ
+  });
+
   if (!memos) return <p>読み込み中...</p>;
 
   return (
-    <div className="grid lg:grid-cols-3 px-4 py-4 gap-4">
-      {memos.map((memoData: MemoData) => (
-        <MemoCard
-          key={memoData.id}
-          memoData={memoData}
-          onDelete={handleDelete}
-          onUpdate={handleUpdate}
-          onFavoriteToggle={handleFavoriteToggle}
-        />
-      ))}
+    <div>
+      {/* フィルターを設定するために MemoHeaderAlt を追加 */}
+      <MemoHeaderAlt onFilterChange={setFilter} />
+
+      <div className="grid lg:grid-cols-3 px-4 py-4 gap-4">
+        {filteredMemos.map((memoData: MemoData) => (
+          <MemoCard
+            key={memoData.id}
+            memoData={memoData}
+            onDelete={handleDelete}
+            onUpdate={handleUpdate}
+            onFavoriteToggle={handleFavoriteToggle}
+          />
+        ))}
+      </div>
     </div>
   );
 };
