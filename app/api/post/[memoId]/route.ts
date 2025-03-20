@@ -55,3 +55,24 @@ export async function PUT(
     return NextResponse.json({ error: "メモの更新に失敗しました" });
   }
 }
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: { memoId: string } }
+) {
+  const { memoId } = params;
+  const { isFavorite } = await request.json();
+
+  try {
+    const updateMemo = await prisma.post.update({
+      where: { id: Number(memoId) },
+      data: { isFavorite },
+    });
+    return new Response(JSON.stringify(updateMemo), { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return new Response(JSON.stringify({ error: "メモの更新に失敗しました" }), {
+      status: 500,
+    });
+  }
+}
