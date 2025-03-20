@@ -1,8 +1,6 @@
 "use client";
 import { Geist, Geist_Mono } from "next/font/google";
-import { usePathname } from "next/navigation";
 import "./globals.css";
-import Header from "./components/layouts/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,17 +17,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
-  const hideHeadersCreatePage = ["/create"];
-  const hideHeadersEditPage = pathname.startsWith("/memo-posts/");
   return (
     <html lang="ja">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {!hideHeadersCreatePage.includes(pathname) && !hideHeadersEditPage && (
-          <Header />
-        )}
         {children}
       </body>
     </html>
