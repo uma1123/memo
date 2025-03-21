@@ -3,4 +3,5 @@ export interface MemoData {
   title: string;
   content: string;
   createdAt: Date;
+  isFavorite: boolean;
 }
