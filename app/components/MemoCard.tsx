@@ -17,8 +17,13 @@ interface MemoDataProps {
   onFavoriteToggle: (id: number, newState: boolean) => void; // 型定義を追加
 }
 
-const MemoCard = ({ memoData, onDelete, onFavoriteToggle }: MemoDataProps) => {
-  const { id, title, content, isFavorite } = memoData;
+const MemoCard = ({
+  memoData,
+  onDelete,
+  onUpdate,
+  onFavoriteToggle,
+}: MemoDataProps) => {
+  const { id, title, content, isFavorite, createdAt } = memoData; // createdAtを追加
 
   return (
     <Card className="w-100 h-60 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 p-4 flex flex-col justify-between relative">
@@ -44,10 +49,12 @@ const MemoCard = ({ memoData, onDelete, onFavoriteToggle }: MemoDataProps) => {
       <CardContent className="text-gray-600 truncate overflow-hidden">
         {content}
       </CardContent>
+
       <CardFooter className="flex justify-between items-center">
         <Link
           href={`/memo-posts/${id}`}
           className="text-blue-600 hover:text-blue-800 transition"
+          onClick={() => onUpdate(id, title, content)}
         >
           <CiEdit size={30} title="編集する" />
         </Link>
@@ -58,6 +65,9 @@ const MemoCard = ({ memoData, onDelete, onFavoriteToggle }: MemoDataProps) => {
           <FaRegTrashAlt size={20} title="削除する" />
         </button>
       </CardFooter>
+      <div className="text-gray-500 text-sm mt-2">
+        作成日時: {new Date(createdAt).toLocaleString()}
+      </div>
     </Card>
   );
 };
