@@ -11,11 +11,11 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Star, Clock, SortAsc } from "lucide-react";
 import Link from "next/link";
 
-export default function MemoHeaderAlt({
-  onFilterChange,
-}: {
+interface MemoHeaderProps {
   onFilterChange: (filter: string) => void;
-}) {
+}
+
+export default function MemoHeaderAlt({ onFilterChange }: MemoHeaderProps) {
   return (
     <div className="border-b bg-background">
       <div className="w-full px-4 py-4">
@@ -34,21 +34,24 @@ export default function MemoHeaderAlt({
         </div>
 
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <Tabs
-            defaultValue="all"
-            className="w-full md:w-auto"
-            onValueChange={onFilterChange}
-          >
+          <Tabs defaultValue="all" className="w-full md:w-auto">
             <TabsList>
-              <TabsTrigger value="all">すべて</TabsTrigger>
+              <TabsTrigger value="all" onClick={() => onFilterChange("all")}>
+                すべて
+              </TabsTrigger>
               <TabsTrigger
                 value="favorites"
                 className="flex items-center gap-1"
+                onClick={() => onFilterChange("favorites")}
               >
                 <Star className="h-4 w-4" />
                 お気に入り
               </TabsTrigger>
-              <TabsTrigger value="recent" className="flex items-center gap-1">
+              <TabsTrigger
+                value="recent"
+                className="flex items-center gap-1"
+                onClick={() => onFilterChange("recent")}
+              >
                 <Clock className="h-4 w-4" />
                 最近
               </TabsTrigger>
