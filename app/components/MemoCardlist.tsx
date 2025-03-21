@@ -97,15 +97,18 @@ const MemoCardList = ({ memoAllData }: MemoAllDataProps) => {
       <MemoHeaderAlt onFilterChange={setFilter} />
 
       <div className="grid lg:grid-cols-3 px-4 py-4 gap-4">
-        {filteredMemos.map((memoData: MemoData) => (
-          <MemoCard
-            key={memoData.id}
-            memoData={memoData}
-            onDelete={handleDelete}
-            onUpdate={handleUpdate}
-            onFavoriteToggle={handleFavoriteToggle}
-          />
-        ))}
+        {filteredMemos
+          .slice()
+          .reverse()
+          .map((memoData: MemoData) => (
+            <MemoCard
+              key={memoData.id}
+              memoData={memoData}
+              onDelete={handleDelete}
+              onUpdate={handleUpdate}
+              onFavoriteToggle={handleFavoriteToggle}
+            />
+          ))}
       </div>
     </div>
   );
