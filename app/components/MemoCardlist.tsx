@@ -85,8 +85,14 @@ const MemoCardList = ({ memoAllData }: MemoAllDataProps) => {
 
   // ** フィルター適用 **
   const filteredMemos = memos.filter((memo) => {
+    const createdAt = new Date(memo.createdAt);
+    const now = new Date();
+    const oneWeekAgo = new Date(now.setDate(now.getDate() - 7));
+    // 最近のメモ
+    if (filter === "recent") return createdAt > oneWeekAgo;
+    if (filter === "all") return true; // すべてのメモ
     if (filter === "favorites") return memo.isFavorite; // お気に入りのみ
-    return true; // すべてのメモ
+    return true;
   });
 
   if (!memos) return <p>読み込み中...</p>;
