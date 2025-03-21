@@ -71,6 +71,10 @@ const MemoCardList = ({ memoAllData }: MemoAllDataProps) => {
             memo.id === id ? { ...memo, isFavorite: newState } : memo
           )
         );
+        alert(
+          newState ? "お気に入りに追加しました" : "お気に入りを解除しました"
+        );
+        router.refresh();
       } else {
         console.error("お気に入り状態の更新に失敗しました");
       }
