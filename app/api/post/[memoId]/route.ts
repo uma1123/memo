@@ -6,7 +6,7 @@ export async function GET(
   request: Request,
   { params }: { params: { memoId: string } }
 ) {
-  const { memoId } = await params;
+  const { memoId } = params;
   const memoDetailData = await prisma.post.findUnique({
     where: {
       id: Number(memoId),
