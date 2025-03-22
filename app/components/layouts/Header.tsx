@@ -1,14 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Star, Clock, SortAsc } from "lucide-react";
+import { Plus, Star, Clock } from "lucide-react";
 import Link from "next/link";
 
 interface MemoHeaderProps {
@@ -57,23 +51,6 @@ export default function MemoHeaderAlt({ onFilterChange }: MemoHeaderProps) {
               </TabsTrigger>
             </TabsList>
           </Tabs>
-
-          <div className="flex flex-1 items-center gap-2 md:w-auto">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <SortAsc className="h-4 w-4" />
-                  <span className="sr-only">並び替え</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>作成日時（新しい順）</DropdownMenuItem>
-                <DropdownMenuItem>作成日時（古い順）</DropdownMenuItem>
-                <DropdownMenuItem>タイトル（昇順）</DropdownMenuItem>
-                <DropdownMenuItem>タイトル（降順）</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
         </div>
       </div>
     </div>
