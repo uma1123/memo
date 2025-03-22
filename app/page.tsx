@@ -3,7 +3,7 @@ import { MemoData } from "./types/types";
 
 //メモデータを全て取得
 async function getMemoAllData() {
-  const response = await fetch("http://localhost:3000/api/post", {
+  const response = await fetch("api/post", {
     cache: "no-store",
   });
   const memoAllData = await response.json();

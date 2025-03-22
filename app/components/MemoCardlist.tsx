@@ -20,7 +20,7 @@ const MemoCardList = ({ memoAllData }: MemoAllDataProps) => {
     if (!confirmed) return;
 
     try {
-      const response = await fetch(`http://localhost:3000/api/post/${id}`, {
+      const response = await fetch(`api/post/${id}`, {
         method: "DELETE",
       });
       if (response.ok) {
@@ -37,7 +37,7 @@ const MemoCardList = ({ memoAllData }: MemoAllDataProps) => {
   // メモ更新処理
   const handleUpdate = async (id: number, title: string, content: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/post/${id}`, {
+      const response = await fetch(`api/post/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, content }),
@@ -59,7 +59,7 @@ const MemoCardList = ({ memoAllData }: MemoAllDataProps) => {
   // お気に入りトグル処理
   const handleFavoriteToggle = async (id: number, newState: boolean) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/post/${id}`, {
+      const response = await fetch(`api/post/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isFavorite: newState }),
