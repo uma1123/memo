@@ -4,7 +4,7 @@ import { prisma } from "../../../../lib/prismaClient";
 //取得
 export async function GET(
   request: Request,
-  { params }: { params: { memoId: string } }
+  { params }: { params: { memoId: number } }
 ) {
   const { memoId } = params;
   const memoDetailData = await prisma.post.findUnique({
@@ -18,7 +18,7 @@ export async function GET(
 //削除
 export async function DELETE(
   request: Request,
-  { params }: { params: { memoId: string } }
+  { params }: { params: { memoId: number } }
 ) {
   const { memoId } = params;
 
@@ -39,7 +39,7 @@ export async function DELETE(
 //更新
 export async function PUT(
   request: Request,
-  { params }: { params: { memoId: string } }
+  { params }: { params: { memoId: number } }
 ) {
   const { memoId } = params;
   const { title, content } = await request.json(); //リクエストボディから取得
@@ -58,7 +58,7 @@ export async function PUT(
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { memoId: string } }
+  { params }: { params: { memoId: number } }
 ) {
   const { memoId } = params;
   const { isFavorite } = await request.json();
