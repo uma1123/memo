@@ -36,7 +36,7 @@ const MemoEditPage = () => {
   useEffect(() => {
     const fetchMemo = async () => {
       try {
-        const res = await fetch(`api/post/${memoId}`);
+        const res = await fetch(`http://localhost:3000/api/post/${memoId}`);
         if (!res.ok) throw new Error("メモの取得に失敗しました");
 
         const data: MemoData = await res.json();
@@ -57,7 +57,7 @@ const MemoEditPage = () => {
   // メモ更新処理
   const handleUpdate = async (values: { title: string; content: string }) => {
     try {
-      const res = await fetch(`api/post/${memoId}`, {
+      const res = await fetch(`http://localhost:3000/api/post/${memoId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),

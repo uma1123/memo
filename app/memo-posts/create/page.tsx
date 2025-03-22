@@ -39,7 +39,7 @@ const CreateMemoPage = () => {
   async function onSubmit(value: z.infer<typeof formSchema>) {
     const { title, content } = value;
     try {
-      await fetch("api/post", {
+      await fetch("http://localhost:3000/api/post", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

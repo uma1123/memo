@@ -1,48 +1,63 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../lib/prismaClient";
 
-//取得
+// 取得
 export async function GET(
-  request: Request,
-  { params }: { params: { memoId: number } }
-) {
-  const { memoId } = params;
-  const memoDetailData = await prisma.post.findUnique({
-    where: {
-      id: Number(memoId),
-    },
-  });
-  return NextResponse.json(memoDetailData);
-}
-
-//削除
-export async function DELETE(
-  request: Request,
-  { params }: { params: { memoId: number } }
+  request: NextRequest,
+  { params }: { params: { memoId: string } } // RouteContext を使わず、直接 params の型を定義
 ) {
   const { memoId } = params;
 
   try {
-    //prisma clientのdeleteメソッドを使って、Postテーブルから指定した」IDのメモを削除する
+    const memoDetailData = await prisma.post.findUnique({
+      where: { id: Number(memoId) },
+    });
+
+    if (!memoDetailData) {
+      return NextResponse.json(
+        { error: "メモが見つかりません" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(memoDetailData);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "メモの取得に失敗しました" },
+      { status: 500 }
+    );
+  }
+}
+
+// 削除
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { memoId: string } }
+) {
+  const { memoId } = params;
+
+  try {
     const deleteMemo = await prisma.post.delete({
       where: { id: Number(memoId) },
     });
-    //削除したメモのデータを200 OKステータスでJSON形式で返す
     return NextResponse.json(deleteMemo, { status: 200 });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "メモの削除に失敗しました" });
+    return NextResponse.json(
+      { error: "メモの削除に失敗しました" },
+      { status: 500 }
+    );
   }
-  //処理内容がDELETE以外のメソッドの場合
 }
 
-//更新
+// 更新
 export async function PUT(
-  request: Request,
-  { params }: { params: { memoId: number } }
+  request: NextRequest,
+  { params }: { params: { memoId: string } }
 ) {
   const { memoId } = params;
-  const { title, content } = await request.json(); //リクエストボディから取得
+  const { title, content } = await request.json();
 
   try {
     const updateMemo = await prisma.post.update({
@@ -52,13 +67,17 @@ export async function PUT(
     return NextResponse.json(updateMemo);
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "メモの更新に失敗しました" });
+    return NextResponse.json(
+      { error: "メモの更新に失敗しました" },
+      { status: 500 }
+    );
   }
 }
 
+// お気に入りトグル
 export async function PATCH(
-  request: Request,
-  { params }: { params: { memoId: number } }
+  request: NextRequest,
+  { params }: { params: { memoId: string } }
 ) {
   const { memoId } = params;
   const { isFavorite } = await request.json();
@@ -68,11 +87,12 @@ export async function PATCH(
       where: { id: Number(memoId) },
       data: { isFavorite },
     });
-    return new Response(JSON.stringify(updateMemo), { status: 200 });
+    return NextResponse.json(updateMemo, { status: 200 });
   } catch (error) {
     console.error(error);
-    return new Response(JSON.stringify({ error: "メモの更新に失敗しました" }), {
-      status: 500,
-    });
+    return NextResponse.json(
+      { error: "メモの更新に失敗しました" },
+      { status: 500 }
+    );
   }
 }
