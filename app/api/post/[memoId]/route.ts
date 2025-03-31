@@ -4,9 +4,9 @@ import { prisma } from "../../../../lib/prismaClient";
 // 取得
 export async function GET(
   request: NextRequest,
-  { params }: { params: { memoId: string } } // RouteContext を使わず、直接 params の型を定義
+  context: { params: { memoId: string } } // Corrected type definition
 ) {
-  const { memoId } = params;
+  const { memoId } = context.params; // context.params から取得
 
   try {
     const memoDetailData = await prisma.post.findUnique({
