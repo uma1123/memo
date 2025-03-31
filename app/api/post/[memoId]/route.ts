@@ -4,9 +4,9 @@ import { prisma } from "../../../../lib/prismaClient";
 // 取得
 export async function GET(
   request: NextRequest,
-  context: { params: Record<string, string> } // Corrected type definition
+  context: { params: { memoId: string } } // 型を明確に指定
 ) {
-  const { memoId } = context.params; // context.params から取得
+  const { memoId } = context.params;
 
   try {
     const memoDetailData = await prisma.post.findUnique({
@@ -33,9 +33,9 @@ export async function GET(
 // 削除
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { memoId: string } }
+  context: { params: { memoId: string } }
 ) {
-  const { memoId } = params;
+  const { memoId } = context.params;
 
   try {
     const deleteMemo = await prisma.post.delete({
@@ -54,9 +54,9 @@ export async function DELETE(
 // 更新
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { memoId: string } }
+  context: { params: { memoId: string } }
 ) {
-  const { memoId } = params;
+  const { memoId } = context.params;
   const { title, content } = await request.json();
 
   try {
@@ -77,9 +77,9 @@ export async function PUT(
 // お気に入りトグル
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { memoId: string } }
+  context: { params: { memoId: string } }
 ) {
-  const { memoId } = params;
+  const { memoId } = context.params;
   const { isFavorite } = await request.json();
 
   try {
