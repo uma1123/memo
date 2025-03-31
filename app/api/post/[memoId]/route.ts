@@ -4,7 +4,7 @@ import { prisma } from "../../../../lib/prismaClient";
 // 取得
 export async function GET(
   request: NextRequest,
-  context: { params: { memoId: string } } // Corrected type definition
+  context: { params: Record<string, string> } // Corrected type definition
 ) {
   const { memoId } = context.params; // context.params から取得
 
